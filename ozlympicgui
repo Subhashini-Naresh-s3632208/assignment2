@@ -1,0 +1,333 @@
+package assignment2;
+
+
+import java.sql.Driver;
+
+
+
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+public class Ozlympicgui extends Application
+{
+	Stage window;
+	Scene scene1,scene2,scene3;
+	Game game=null;
+	int count=0;
+	Game[] games=new Game[15];
+	CheckBox[] bx=null;
+	boolean[] box=null;
+	public void start(Stage primaryStage)
+	{
+			try{
+					Driver3632208 driver=new Driver3632208();
+					window= primaryStage;
+					
+					Label label1=new Label("Welcome to Ozlympic Sports!");
+					Label label2= new Label("\nPlease choose the options 1-6 from the menu below:"); 
+					// \n1)Select a game to run\n2)Predict the winner of the game\n3)Start the game\n4)Display the final result of all games\n5)Display the points of all Athletes\n6)Exit\n
+					Hyperlink selectGame = new Hyperlink();
+					selectGame.setText("\n1)Select a game to run\n");
+					selectGame.setOnAction(e ->{
+						window.setScene(scene2);
+						//game =driver.selectAGame();
+						//games[count]=game;
+						
+						
+						
+					    });					
+					Hyperlink predictGame = new Hyperlink();
+					predictGame.setText("2)Predict the winner of the game\n");
+					predictGame.setOnAction(e ->{
+						try{
+						game =driver.prediction(game);
+						}
+						catch(Exception exception){
+							
+								Label no=new Label("NO GAME CHOSEN");
+								Button ok=new Button("Back");
+								ok.setOnAction(event->window.setScene(scene1));
+								VBox v=new VBox();
+								v.getChildren().addAll(no,ok);
+								Scene s1=new Scene(v,50,50);
+								window.setScene(s1);
+								
+									
+						}
+						
+					    });	
+					Hyperlink startGame = new Hyperlink();
+					startGame.setText("3)Start the game\n");
+					startGame.setOnAction(e ->{
+						
+						game =driver.startGame(game);
+						games[count]=game;
+						count++;
+						
+						
+					    });	
+					Hyperlink displayResult = new Hyperlink();
+					displayResult.setText("4)Display the results\n");
+					displayResult.setOnAction(e ->{
+						
+						System.out.println(count);
+						driver.displayResults(games, count);
+						
+					    });	
+					Hyperlink displayPoints = new Hyperlink();
+					displayPoints.setText("5)Display the points\n");
+					displayPoints.setOnAction(e ->{
+						
+						driver.displayPoints();
+						
+					    });	
+					Hyperlink exitGame = new Hyperlink();
+					exitGame.setText("6)Exit the game\n");
+					exitGame.setOnAction(e ->{
+						
+						System.exit(0);
+						
+					    });
+				
+		
+			VBox pane=new VBox();
+			pane.getChildren().addAll(label1,label2,selectGame,predictGame,startGame,displayResult,displayPoints,exitGame);
+			Scene scene1 = new Scene(pane,400,400);
+			primaryStage.setTitle("Ozlympic Sports");
+			primaryStage.setScene(scene1);
+			primaryStage.show();
+			
+			Label label4=new Label("Select the athletes for ur game ");
+			VBox layout3= new VBox();
+			layout3.getChildren().addAll(label4);
+			
+			ScrollPane s1=new ScrollPane();
+		
+			layout3.getChildren().add(s1);
+			
+			
+			/*s1.setPannable(true);
+	        s1.setPrefSize(10000, 10000);
+	        s1.setHbarPolicy(ScrollBarPolicy.NEVER);
+	        s1.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+	        s1.setFitToWidth(true);
+	        s1.setHmax(3);
+	        s1.setVmax(0);*/
+	       
+			Label label3=new Label("\nChoose one of the options\n");
+			
+			Hyperlink swimming = new Hyperlink();
+			swimming.setText("\n1)Swimming\n");
+
+			swimming.setOnAction(e ->{
+				
+				driver.choose="SW";
+				game=driver.selectAGame();
+				bx=new CheckBox[game.listOfAthletes.length];
+				box=new boolean[game.listOfAthletes.length];
+				for(int i=1;i<game.listOfAthletes.length;i++)
+				{
+					int k=i;
+					bx[i]=new CheckBox(i+") "+game.listOfAthletes[i].role +" "+game.listOfAthletes[i].name+" "+ game.listOfAthletes[i].athleteId);
+					bx[i].setOnAction(e1->{
+						if(bx[k].isSelected())
+						{
+							
+							if(!(game.listOfAthletes[k].role.matches("(swimmer|super)")))
+							{
+								try
+								{
+									String msg="Wrong Type of athlete chosen ";
+									String role="swimmer";
+									throw new WrongTypeException(msg,game.listOfAthletes[k].role,role);
+								}
+								catch(WrongTypeException exception)
+								{
+									System.out.println(exception.getMessage());
+								}
+								bx[k].setSelected(false);
+								box[k]=false;
+							}
+							else
+							{
+								box[k]=true;
+							}
+				}
+					});
+					layout3.getChildren().add(bx[i]);
+				}
+				window.setScene(scene3);					
+			});
+			Hyperlink cycling = new Hyperlink();
+			cycling.setText("\n2)Cycling\n");
+			cycling.setOnAction(e ->{
+				
+				driver.choose="CY";
+				game=driver.selectAGame();
+				bx=new CheckBox[game.listOfAthletes.length];
+				box=new boolean[game.listOfAthletes.length];
+				for(int i=0;i<game.listOfAthletes.length;i++)
+				{
+					int k=i;
+					bx[i]=new CheckBox(i+") "+game.listOfAthletes[i].role +" "+game.listOfAthletes[i].name+" "+ game.listOfAthletes[i].athleteId);
+					bx[i].setOnAction(e1->{
+						if(bx[k].isSelected())
+						{
+							
+									if(!(game.listOfAthletes[k].role.matches("(cyclist|super)")))
+									{
+										try
+										{
+											String msg="Wrong Type of athlete chosen ";
+											String role="cyclist";
+											throw new WrongTypeException(msg,game.listOfAthletes[k].role,role);
+										}
+										catch(WrongTypeException exception)
+										{
+											System.out.println(exception.getMessage());
+										}
+										bx[k].setSelected(false);
+										box[k]=false;
+									}
+									else
+									{
+										box[k]=true;
+									}
+						}
+		
+						
+					});
+					layout3.getChildren().add(bx[i]);
+				}
+				
+				window.setScene(scene3);	
+				
+				
+			});
+			Hyperlink running = new Hyperlink();
+			running.setText("\n3)Running\n");
+			running.setOnAction(e ->{
+				
+				driver.choose="RU";
+				game=driver.selectAGame();
+				bx=new CheckBox[game.listOfAthletes.length];
+				box=new boolean[game.listOfAthletes.length];
+				for(int i=0;i<game.listOfAthletes.length;i++)
+				{
+					int k=i;
+					bx[i]=new CheckBox(i+") "+game.listOfAthletes[i].role +" "+game.listOfAthletes[i].name+" "+ game.listOfAthletes[i].athleteId);
+					bx[i].setOnAction(e1->{
+						if(bx[k].isSelected())
+						{
+							
+							if(!(game.listOfAthletes[k].role.matches("(sprinter|super)")))
+							{
+								try
+								{
+									String msg="Wrong Type of athlete chosen ";
+									String role="sprinter";
+									throw new WrongTypeException(msg,game.listOfAthletes[k].role,role);
+								}
+								catch(WrongTypeException exception)
+								{
+									System.out.println(exception.getMessage());
+								}
+								bx[k].setSelected(false);
+								box[k]=false;
+							}
+							else
+							{
+								box[k]=true;
+							}
+				}
+					});
+					layout3.getChildren().add(bx[i]);
+				}
+				
+				window.setScene(scene3);
+								
+			});
+			
+			VBox layout2= new VBox();
+			layout2.getChildren().addAll(label3,swimming,cycling,running);
+			scene2=new Scene(layout2,400,400);
+		
+		
+			Button selected=new Button("Select");
+			layout3.getChildren().add(selected);
+			selected.setOnAction(e -> {
+				
+			try{
+				
+				game=driver.chosenAthletes(box, game);
+				System.out.println("Participants of "+game.gameId+" are:");
+				for(int i=0;i<game.participants.length;i++)
+					System.out.println(i+")"+game.participants[i].athleteId+" "+game.participants[i].name);
+					window.setScene(scene1);
+				}
+				catch(GameFullExceptions exception)
+				{
+					System.err.println(exception.getMessage());
+					window.setScene(scene3);
+				} 
+				catch (TooFewAthleteException e1) 
+				{
+					
+					System.err.println(e1.getMessage());
+					window.setScene(scene3);
+				}
+				catch(Exception exception)
+				{
+					System.out.println(exception.getMessage());
+					window.setScene(scene3);
+				}
+			});
+			
+			scene3=new Scene(layout3,400,400);
+	        	     //  window.setScene(scene1);
+	        	       
+	         
+	        
+	       
+			}
+			catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+		
+	}
+	
+	public static void main(String[] args) {
+	       Application.launch(args);
+	    }
+	
+
+}
+
