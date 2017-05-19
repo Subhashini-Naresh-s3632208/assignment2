@@ -1,0 +1,37 @@
+oz1111,swimmer,John andy,26,Vic
+oz1212,swimmer,Vivien,28,Qld
+oz1003,swimmer,Simon,27,Vic
+oz1114,swimmer,Woods,19,Tas
+oz1115,swimmer,Michael,30,Nsw
+oz1116,swimmer,Caroline,26,Vic
+oz1199,swimmer,Charles,24,Nt
+oz1198,swimmer,kaleb,26,act
+oz1198,swimmer,kaleb,26,act
+oz1138,cyclist,Huan,21,Vic
+oz1350,super,Brinda,34,Vic		
+oz1348,super,Barbera,19,Vic
+oz1217,sprinter,Michelle,20,Wa
+oz1318,sprinter,Jimmy,24,Vic
+oz1319,sprinter,Zac,26,Qld
+oz1220,sprinter,Johny,24,NSW
+oz1221,sprinter,Joana,25,Tas
+oz1222,sprinter,Rose,26,Vic
+oz1223,sprinter,Carmen,29,Wa
+oz1224,sprinter,Andrea,30,Sa
+oz1224,sprinter,Andrea,30,Sa		
+oz1131,cyclist,Julia,22,Sa
+oz1132,cyclist,Jerry,23,Wa
+oz1133,cyclist,Steve,24,Qld
+oz1134,cyclist,Bella,26,Tas
+oz1135,cyclist,Lily,28,Sa
+oz1136,cyclist,Jacob,29,Vic
+oz1137,cyclist,Andrew,21,Nsw
+oz1515,officer,SIMONS,45,nsw
+oz1516,officer,david shepered,50,vic
+oz1149,super,Joseph,20,Nsw
+oz1200,super,Hanna,24,Wa
+oz1210,super,David,23,Wa
+oz1220,super,Richard,22,Sa
+oz1230,super,Stephie,22,Sa
+oz1240,super,Serena,21,Sa
+oz1250,super,Federer,20,Tas
